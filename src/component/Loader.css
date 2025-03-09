@@ -1,0 +1,29 @@
+@keyframes loader-move {
+    0%   { top: 0; left: 0; }
+    25%  { top: 100%; left: 0; }
+    50%  { top: 100%; left: 100%; }
+    75%  { top: 0; left: 100%; }
+    100% { top: 0; left: 0; }
+  }
+  
+  @keyframes loader-rotate {
+    80%, 100% { transform: rotate(180deg); }
+  }
+  
+  .animate-loader1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: -8px 0 0 -8px;
+    animation: loader-move 2s infinite, loader-rotate 0.5s infinite;
+  }
+  
+  .animate-loader2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: -8px 0 0 -8px;
+    animation: loader-move 2s infinite, loader-rotate 0.5s infinite;
+    animation-delay: -1s, 0s;
+  }
+  

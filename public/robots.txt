@@ -1,0 +1,8 @@
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /maincorosole/
+Disallow: /dmhpropertiesformsubmitonlyforadmin/
+
+
+Sitemap: https://dmhproperties.in/sitemap.xml
