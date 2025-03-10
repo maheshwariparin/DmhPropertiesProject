@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { supabase } from "../supabaseclient";
+import { supabase } from "../supabaseClient";
 const PropertyContext = createContext();
 
 // Context Provider component
