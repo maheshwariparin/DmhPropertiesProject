@@ -213,9 +213,17 @@ const Stage5 = () => {
     SethouseStatus,
         houseStatus,
         HouseStatus,
+        setPossessionDate,
+        possessionDate,
   } = useProperty();
 
   const steps = ['Listing Type-Category', 'Property Location', 'Property Detail', 'Add Images', 'Add Aminities'];
+
+  useEffect(() => {
+    if (houseStatus === "Ready To Move") {
+      setPossessionDate("");
+    }
+  }, [houseStatus]);
 
   return (
 
@@ -316,8 +324,27 @@ const Stage5 = () => {
                                                   
                           </div>       
                         </div>
-     
-      
+
+        {houseStatus === "Under Construction" && (
+  <div className="my-4">
+    <label htmlFor="possessionDate" className="block mb-2 font-semibold">
+      Possession Date (Month &amp; Year):
+    </label>
+    <input
+      type="month"
+      id="possessionDate"
+      name="possessionDate"
+      className="border border-gray-300 rounded p-2"
+      // Add value and onChange as needed, for example:
+      value={possessionDate}
+      onChange={(e) => setPossessionDate(e.target.value)}
+    />
+  </div>
+)}
+
+
+
+
 
 
       {/* Other Rooms Selection */}

@@ -32,20 +32,24 @@ function ShowAllProperties() {
         }
         setLoading(false);
     };
-
     const handleDelete = async (propertyId) => {
-        const { error } = await supabase
-            .from('dmhproperties')
-            .delete()
-            .eq('id', propertyId);
-
-        if (error) {
-            console.error('Error deleting property:', error.message);
-        } else {
-            setProperties(properties.filter((property) => property.id !== propertyId));
-            console.log('Property deleted successfully!');
-        }
+      // Show confirmation dialog
+      const confirmed = window.confirm("Are you sure you want to delete this property?");
+      if (!confirmed) return;
+    
+      const { error } = await supabase
+        .from('dmhproperties')
+        .delete()
+        .eq('id', propertyId);
+    
+      if (error) {
+        console.error('Error deleting property:', error.message);
+      } else {
+        setProperties(properties.filter((property) => property.id !== propertyId));
+        console.log('Property deleted successfully!');
+      }
     };
+    
 
     const formatPrice = (price) => {
         if (price >= 10000000) {

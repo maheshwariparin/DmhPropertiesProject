@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../Loader"
 import { FaStairs } from "react-icons/fa6";
 import { Helmet } from 'react-helmet';
+import { CiStopwatch } from "react-icons/ci";
 const Viewdetails = () => {
     const [properties, setProperties] = useState({});
     const [loading, setLoading] = useState(true);
@@ -314,7 +315,12 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
           </div>
           <div className="flex items-center gap-2"><MdBalcony /> {properties.balconies} Balconies</div>
           <div className="flex items-center gap-2"><FaRulerCombined /> {properties.carpet_area} {properties.area_unit}</div>
-          <div className="flex items-center gap-2"><FaCar /> Parking: {properties.covered_parking || properties.open_parking ? "Available" : "Not Available"}</div>
+           <div className="flex items-center gap-2">
+                          <CiStopwatch />
+            <span className="">
+              {properties.possessiondate ? `Possession in ${properties.possessiondate}` : "Ready to Move"}
+            </span>
+          </div>
           <div className="flex items-center gap-2"><FaHome /> {properties.property_type}</div>
           <div className="flex items-center gap-2"><IoLocationSharp /> {properties.location?.locality}, {properties.location?.society}</div>
           <div className="flex items-center gap-2"><FaCompass /> Facing: {properties.facing || "Not Specified"}</div>
@@ -372,7 +378,9 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
 
     {/* Additional Rooms with Parking Info */}
     <div>
-      <h3 className="text-lg font-semibold text-gray-600 mb-2">Additional Rooms</h3>
+    {properties.selected_rooms?.length>0&& (
+  <h3 className="text-lg font-semibold text-gray-600 mb-2">Details Of Furnishing</h3>
+)}
       <div className="grid grid-cols-2 gap-2">
         {properties.selected_rooms?.length > 0 ? (
           properties.selected_rooms.map((room, index) => (
@@ -387,7 +395,9 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
 
       {/* Parking Info below Additional Rooms */}
       <div className="mt-4">
-        <h3 className="text-lg font-semibold text-gray-600 mb-2">Parking Info</h3>
+      {(properties.covered_parking > 0 || properties.open_parking > 0) && (
+  <h2 className="text-lg font-semibold mb-4">Parking Info</h2>
+)}
         <div className="space-y-2">
           {properties.open_parking > 0 ? (
             <div className="flex items-center space-x-2">

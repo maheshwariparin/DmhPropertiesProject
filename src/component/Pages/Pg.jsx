@@ -13,6 +13,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import Loader from "../Loader";
 export default function PG() {
     const [images, setImages] = useState([]);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -124,7 +125,7 @@ export default function PG() {
         window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
       };
      
-      
+      const [filteredProperties, setFilteredProperties] = useState([]);
     useEffect(() => {
         fetchProperties();
     }, []);
@@ -146,10 +147,11 @@ export default function PG() {
                 })
             );
             setProperties(propertiesWithImages);
+            setFilteredProperties(propertiesWithImages)
             const uniqueLocalities = [...new Set(data.map(p => p.location?.locality))].filter(Boolean);
             setLocalities(uniqueLocalities);
         }
-        setLoading(false);
+        setTimeout(() => setLoading(false), 500);
     };
 
     const getFirstImageUrl = async (propertyId) => {
@@ -169,23 +171,37 @@ export default function PG() {
     const [searchQuery, setSearchQuery] = useState('');
     const [localities, setLocalities] = useState([]);
     const [selectedLocality, setSelectedLocality] = useState('');
-    const [rentRange, setRentRange] = useState([0, 1000000]);
+    const [rentRange, setRentRange] = useState([0, 100000000]);
     const [propertyCategory, setPropertyCategory] = useState('');
     
-    const filteredProperties = properties.filter((property) => {
-        const localityMatch = selectedLocality ? property.location?.locality === selectedLocality : true;
-        const rentMatch = property.rent_price ? (property.rent_price >= rentRange[0] && property.rent_price <= rentRange[1]) : true;
-        const categoryMatch = propertyCategory ? property.property_category === propertyCategory : true;
-        const searchMatch = searchQuery ? (
-            property.location?.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            property.location?.locality?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            property.location?.society?.toLowerCase().includes(searchQuery.toLowerCase())
-        ) : true;
+    const runFilter = () => {
+       
+        const filteredProperties = properties.filter((property) => {
+          const localityMatch = selectedLocality ? property.location?.locality === selectedLocality : true;
+          const rentMatch = property.rent_price ? (property.rent_price >= rentRange[0] && property.rent_price <= rentRange[1]) : true;
+          const categoryMatch = propertyCategory ? property.property_category === propertyCategory : true;
+          const searchMatch = searchQuery ? (
+              property.location?.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              property.location?.locality?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              property.location?.society?.toLowerCase().includes(searchQuery.toLowerCase())
+          ) : true;
+      
+          return localityMatch && rentMatch  && categoryMatch && searchMatch;
+        });
+        
+        setFilteredProperties(filteredProperties);
+      }
+
+      if (loading) {
+        return (
+          <div className="flex items-center justify-center h-screen bg-blue-100">
+            <Loader />
+          </div>
+        );
+      }
     
-        return localityMatch && rentMatch && categoryMatch && searchMatch;
-    });
     return (
-        <div className="bg-[#F3F4F6] min-h-screen border-1 border-gray-100">
+        <div className="bg-[#F3F4F6] min-h-screen border-1 pt-20 border-gray-100">
             <div className="fixed top-0 left-0 w-full z-50 flex items-center p-2 border-b border-gray-300 shadow-sm bg-white md:justify-between">
                 <img
                     src={logo}
@@ -353,8 +369,16 @@ export default function PG() {
       className="mt-2 w-[260px]"
     />
   </div>
+
+
 </div>
- 
+<button
+        onClick={runFilter}
+        className="bg-blue-500 hover:bg-blue-600 justify-center text-white font-bold py-2 px-4 ml-[30%] md:ml-[40%] mt-3 rounded"
+
+      >
+      Apply  Search
+      </button>
 
 
             </div>
@@ -529,7 +553,7 @@ export default function PG() {
                     <div className="w-32 h-32 mt-7">
                         <img src={logo} alt="Logo" className="w-full h-full object-contain rounded-lg" />
                     </div>
-                    <p className="text-sm text-center">Your Dream Home Awaits</p>
+                    <p className="text-sm text-center font-medium mt-2 ">BUY | SELL | RENT | LEASE</p>
                 </div>
             </div>
 

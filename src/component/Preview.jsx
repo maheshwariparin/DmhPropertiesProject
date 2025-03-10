@@ -9,6 +9,7 @@ import { FaCouch, FaCheckCircle, FaDoorOpen } from "react-icons/fa";
 import {FaParking } from "react-icons/fa";
 import {useStage} from "../context/SetStageContext"
 import { useNavigate } from 'react-router-dom';
+import { CiStopwatch } from "react-icons/ci";
 const Preview = () => {
   const {
     location,
@@ -35,10 +36,12 @@ const Preview = () => {
     rentPrice,
     handleSaveProperty,
     houseStatus,
+    possessionDate,
   } = useProperty();
 
    const { stage, setStage } = useStage();
-   
+   const [loading, setLoading] = useState(false);
+   const [buttonStatus, setButtonStatus] = useState("Add");
   const formatPrice = (price) => {
     if (price >= 10000000) {
       return (price / 10000000).toFixed(1) + ' Cr';
@@ -61,14 +64,28 @@ const Preview = () => {
   const navigate = useNavigate();
 
   const handleSavePropertyhere = async () => {
+    setLoading(true);
+    setButtonStatus("Loading...");
     try {
-        handleSaveProperty();
-
-          
+      const data = await handleSaveProperty(); // context function call
+      console.log("Property saved successfully with ID:", data?.[0]?.id);
+      setButtonStatus("Done");
     } catch (error) {
-        console.error("Failed to save property:", error);
+      console.error("Failed to save property:", error);
+      // If the error message is known and indicates a noncritical issue, you could treat it as success:
+      if (error.message.includes("noncritical condition")) {
+        setButtonStatus("Done");
+      } else {
+        setButtonStatus("Failed");
+      }
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setButtonStatus("Add");
+      }, 5000);
     }
-};
+  };
+  
 
 const GotoAdmin=()=>{
          navigate("/admin")
@@ -114,12 +131,12 @@ const GotoAdmin=()=>{
     
         <div className="flex space-x-4">
        
-          <button
-            onClick={handleSavePropertyhere}
-            className="px-6 py-2 bg-gray-500 text-white rounded-2xl hover:bg-gray-600 transition"
-          >
-            Add
-          </button>
+        <button
+      onClick={handleSavePropertyhere}
+      className="px-6 py-2 bg-gray-500 text-white rounded-2xl hover:bg-gray-600 transition"
+    >
+      {buttonStatus}
+    </button>
           <button
          onClick={() => setStage((prev) => prev - 1)}
 
@@ -214,11 +231,11 @@ const GotoAdmin=()=>{
   </div>
 
   <div className="flex space-x-4">
-    <button
-      onClick={handleSaveProperty}
+  <button
+      onClick={handleSavePropertyhere}
       className="px-6 py-2 bg-gray-500 text-white rounded-2xl hover:bg-gray-600 transition"
     >
-      Add
+      {buttonStatus}
     </button>
     <button 
       onClick={() => setStage((prev) => prev - 1)}
@@ -290,14 +307,11 @@ const GotoAdmin=()=>{
                 <div className="flex items-center gap-2"><MdBalcony /> {balconies} Balconies</div>
                 <div className="flex items-center gap-2"><FaRulerCombined /> {carpetArea} {areaUnit}</div>
                 <div className="flex items-center gap-2">
-      <FaCar />
-      Parking:{" "}
-      {coveredParking
-        ? " Available"
-        : openParking
-        ? " Available"
-        : "Not Available"}
-    </div>
+                <CiStopwatch />
+  <span className="">
+    {possessionDate ? `Possession in ${possessionDate}` : "Ready to Move"}
+  </span>
+</div>
                 <div className="flex items-center gap-2"><FaHome /> {propertyType}</div>
                 <div className="flex items-center gap-2"><IoLocationSharp /> {location?.locality}, {location?.society}</div>
                 {/* <div className="flex items-center gap-2">Floor : {selectedFloor}th of {totalFloors}</div>
@@ -344,7 +358,9 @@ const GotoAdmin=()=>{
     
         {/* Facing */}
         <div>
-        <h3 className="text-lg font-semibold text-gray-600 mb-2">Addiotional Rooms</h3>
+        {selectedRooms.length > 0 && (
+  <h3 className="text-lg font-semibold text-gray-600 mb-2">Additional Rooms</h3>
+)}
           <div className="grid grid-cols-2 gap-2">
             {selectedRooms?.map((room, index) => (
               <div key={index} className="flex items-center gap-2 text-gray-500">
@@ -352,11 +368,14 @@ const GotoAdmin=()=>{
                 {room}
               </div>
             )) || <p className="text-gray-400">No additional rooms</p>}
+
           </div>
         </div>
     
         <div className="mb-19">
-          <h3 className="text-lg font-semibold text-gray-600 mb-2">Details Of Furnishing</h3>
+        {selectedAmenities.length > 0 && (
+  <h3 className="text-lg font-semibold text-gray-600 mb-2">Details Of Furnishing</h3>
+)}
           <div className="grid grid-cols-2 gap-2">
             {selectedAmenities?.map((amenity, index) => (
               <div key={index} className="flex items-center gap-2 text-gray-500">
@@ -370,7 +389,9 @@ const GotoAdmin=()=>{
         {/* Rooms */}
         <div className="text-lg font-semibold text-gray-600 mt-1">
         
-      <h2 className="text-lg font-semibold mb-4">Parking Info</h2>
+        {(coveredParking > 0 || openParking > 0) && (
+  <h2 className="text-lg font-semibold mb-4">Parking Info</h2>
+)}
 
       <div className="space-y-4 text-lg">
         {openParking > 0 && (

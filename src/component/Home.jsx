@@ -12,6 +12,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import Loader from "./Loader"
 export default function Home() {
 
     const [images, setImages] = useState([]);
@@ -33,6 +34,7 @@ export default function Home() {
         window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
       };
    
+      const [filteredProperties, setFilteredProperties] = useState([]);
 
     const fetchCarouselData = async () => {
         try {
@@ -125,10 +127,11 @@ export default function Home() {
                 })
             );
             setProperties(propertiesWithImages);
+            setFilteredProperties(propertiesWithImages)
             const uniqueLocalities = [...new Set(data.map(p => p.location?.locality))].filter(Boolean);
             setLocalities(uniqueLocalities);
         }
-        setLoading(false);
+        setTimeout(() => setLoading(false), 500)
     };
 
     const getFirstImageUrl = async (propertyId) => {
@@ -179,21 +182,35 @@ export default function Home() {
     const [rentRange, setRentRange] = useState([0, 100000000]);
     const [sellRange, setSellRange] = useState([0, 1000000000]);
     const [propertyCategory, setPropertyCategory] = useState('');
-    
-    const filteredProperties = properties.filter((property) => {
-        const localityMatch = selectedLocality ? property.location?.locality === selectedLocality : true;
-        const rentMatch = property.rent_price ? (property.rent_price >= rentRange[0] && property.rent_price <= rentRange[1]) : true;
-        const sellMatch = property.expected_price ? (property.expected_price >= sellRange[0] && property.expected_price <= sellRange[1]) : true;
-        const categoryMatch = propertyCategory ? property.property_category === propertyCategory : true;
-        const searchMatch = searchQuery ? (
-            property.location?.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            property.location?.locality?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            property.location?.society?.toLowerCase().includes(searchQuery.toLowerCase())
-        ) : true;
-    
-        return localityMatch && rentMatch && sellMatch && categoryMatch && searchMatch;
-    });
+   
 
+    const runFilter = () => {
+       
+        const filteredProperties = properties.filter((property) => {
+          const localityMatch = selectedLocality ? property.location?.locality === selectedLocality : true;
+          const rentMatch = property.rent_price ? (property.rent_price >= rentRange[0] && property.rent_price <= rentRange[1]) : true;
+          const sellMatch = property.expected_price ? (property.expected_price >= sellRange[0] && property.expected_price <= sellRange[1]) : true;
+          const categoryMatch = propertyCategory ? property.property_category === propertyCategory : true;
+          const searchMatch = searchQuery ? (
+              property.location?.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              property.location?.locality?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              property.location?.society?.toLowerCase().includes(searchQuery.toLowerCase())
+          ) : true;
+      
+          return localityMatch && rentMatch && sellMatch && categoryMatch && searchMatch;
+        });
+        
+        setFilteredProperties(filteredProperties);
+      
+      };
+
+      if (loading) {
+        return (
+          <div className="flex items-center justify-center h-screen bg-blue-100">
+            <Loader />
+          </div>
+        );
+      }
 
     return (
         <div className="min-h-screen border-1 pt-20 border-gray-100 bg-[#F3F4F6]">
@@ -315,7 +332,7 @@ export default function Home() {
     )}
 </div>
           <div>
-          <div className="space-y-6 mt-7     h-full">
+          <div className="space-y-6 mt-15 h-full">
           <div className="p-4">
           <div className="flex flex-wrap items-center gap-4 justify-evenly">
   <div className="flex flex-col">
@@ -388,6 +405,13 @@ export default function Home() {
 </div>
 
 
+      <button
+        onClick={runFilter}
+        className="bg-blue-500 hover:bg-blue-600 justify-center text-white font-bold py-2 px-4 ml-[30%] md:ml-[40%] mt-3 rounded"
+
+      >
+      Apply  Search
+      </button>
 
             </div>
             
@@ -557,7 +581,7 @@ export default function Home() {
                     <div className="w-32 h-32 mt-7">
                         <img src={logo} alt="Logo" className="w-full h-full object-contain rounded-lg" />
                     </div>
-                    <p className="text-sm text-center">Your Dream Home Awaits</p>
+                    <p className="text-sm text-center font-medium mt-2 ">BUY | SELL | RENT | LEASE</p>
                 </div>
             </div>
 

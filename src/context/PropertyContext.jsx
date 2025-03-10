@@ -35,7 +35,7 @@ export const PropertyProvider = ({ children }) => {
   const [openParking, setOpenParking] = useState(0);
   const [facing, setFacing] = useState("");
   const [houseStatus,SethouseStatus]=useState("")
-
+  const [possessionDate, setPossessionDate] = useState("");
   // Static Data
   const roomOptions = ["Pooja Room", "Servant Room", "Study Room", "Store Room"];
   const amenitiesList = [
@@ -255,20 +255,20 @@ export const PropertyProvider = ({ children }) => {
               city: propertyData.location.city,
             },
             house_status:propertyData.houseStatus,
-
+            possessiondate:possessionDate,
           },
         ]);
   
-      if (error) {
-        throw new Error(`Failed to save property data: ${error.message}`);
+        if (error && (!data || data.length === 0)) {
+          throw new Error(`Failed to save property data: ${error.message}`);
+        }
+    
+        console.log("Property saved successfully with ID:", propertyId);
+        return data;
+      } catch (error) {
+        console.error("Error saving property:", error.message);
+        throw error;
       }
-  
-      console.log("Property saved successfully with ID:", propertyId);
-      return data;
-    } catch (error) {
-      console.error("Error saving property:", error.message);
-      throw error;
-    }
   };
   
 
@@ -300,7 +300,8 @@ const handleSaveProperty = async () => {
     coveredParking,
     openParking,
     facing,
-    houseStatus
+    houseStatus,
+    possessionDate
   };
 
   try {
@@ -347,6 +348,8 @@ const handleSaveProperty = async () => {
         HouseStatus,
         SethouseStatus,
         houseStatus,
+        setPossessionDate,
+        possessionDate
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-@keyframes loader-move {
+/* @keyframes loader-move {
     0%   { top: 0; left: 0; }
     25%  { top: 100%; left: 0; }
     50%  { top: 100%; left: 100%; }
@@ -26,4 +26,13 @@
     animation: loader-move 2s infinite, loader-rotate 0.5s infinite;
     animation-delay: -1s, 0s;
   }
-  
+   */
+
+
+
+
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
