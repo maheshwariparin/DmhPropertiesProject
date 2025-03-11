@@ -33,22 +33,38 @@ function ShowAllProperties() {
         setLoading(false);
     };
     const handleDelete = async (propertyId) => {
-      // Show confirmation dialog
       const confirmed = window.confirm("Are you sure you want to delete this property?");
       if (!confirmed) return;
     
       try {
-        // Delete images folder from storage
-        const { data, error: storageError } = await supabase.storage
+        // List all files in the folder and subfolder
+        const { data: files, error: listError } = await supabase.storage
           .from('property-images')
-          .remove([`${propertyId}/`]);
+          .list(`${propertyId}/image`);
     
-        if (storageError) {
-          console.error('Error deleting property images:', storageError.message);
+        if (listError) {
+          console.error('Error listing property images:', listError.message);
           return;
         }
     
-        console.log('Property images deleted successfully!');
+        if (files.length > 0) {
+          // Collect full file paths for deletion
+          const filePaths = files.map((file) => `${propertyId}/image/${file.name}`);
+    
+          // Delete the files
+          const { error: storageError } = await supabase.storage
+            .from('property-images')
+            .remove(filePaths);
+    
+          if (storageError) {
+            console.error('Error deleting property images:', storageError.message);
+            return;
+          }
+    
+          console.log('Property images deleted successfully!');
+        } else {
+          console.log('No images found for this property.');
+        }
     
         // Delete property from database
         const { error: dbError } = await supabase
@@ -67,7 +83,7 @@ function ShowAllProperties() {
       }
     };
     
-    // Let me know if you want me to handle errors differently or add more features! 🚀
+    // Let me know if you want me to tweak anything else! 🚀
     
     
 
