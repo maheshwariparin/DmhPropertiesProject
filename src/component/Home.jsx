@@ -187,7 +187,9 @@ export default function Home() {
     const runFilter = () => {
        
         const filteredProperties = properties.filter((property) => {
-          const localityMatch = selectedLocality ? property.location?.locality === selectedLocality : true;
+          const localityMatch = selectedLocality && property.location?.locality 
+          ? property.location.locality === selectedLocality 
+          : true;      
           const rentMatch = property.rent_price ? (property.rent_price >= rentRange[0] && property.rent_price <= rentRange[1]) : true;
           const sellMatch = property.expected_price ? (property.expected_price >= sellRange[0] && property.expected_price <= sellRange[1]) : true;
           const categoryMatch = propertyCategory ? property.property_category === propertyCategory : true;

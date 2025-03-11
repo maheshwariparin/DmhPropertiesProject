@@ -362,7 +362,9 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
         <FaCouch /> {properties.furnishing || "Not furnished"}
       </div>
 
-      <h3 className="text-lg font-semibold text-gray-600 mb-2">Details Of Furnishing</h3>
+      {properties.selected_amenities?.length>0&& (
+  <h3 className="text-lg font-semibold text-gray-600 mb-2">Details Of Furnishing</h3>
+)}
       <div className="grid grid-cols-2 gap-2">
         {properties.selected_amenities?.length > 0 ? (
           properties.selected_amenities.map((amenity, index) => (
@@ -371,7 +373,7 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
             </div>
           ))
         ) : (
-          <p className="text-gray-400">No amenities available</p>
+         <></>
         )}
       </div>
     </div>
@@ -379,7 +381,7 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
     {/* Additional Rooms with Parking Info */}
     <div>
     {properties.selected_rooms?.length>0&& (
-  <h3 className="text-lg font-semibold text-gray-600 mb-2">Details Of Furnishing</h3>
+  <h3 className="text-lg font-semibold text-gray-600 mb-2">Addiotional Rooms</h3>
 )}
       <div className="grid grid-cols-2 gap-2">
         {properties.selected_rooms?.length > 0 ? (
@@ -389,11 +391,11 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
             </div>
           ))
         ) : (
-          <p className="text-gray-400">No additional rooms</p>
+          <></>
         )}
       </div>
 
-      {/* Parking Info below Additional Rooms */}
+     
       <div className="mt-4">
       {(properties.covered_parking > 0 || properties.open_parking > 0) && (
   <h2 className="text-lg font-semibold mb-4">Parking Info</h2>
@@ -405,7 +407,7 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
               <span className=' text-gray-500'>Open Parking: {properties.open_parking}</span>
             </div>
           ) : (
-            <div className="text-gray-400">No open parking available</div>
+            <></>
           )}
 
           {properties.covered_parking > 0 ? (
@@ -414,7 +416,7 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
               <span className='text-gray-500'>Covered Parking: {properties.covered_parking}</span>
             </div>
           ) : (
-            <div className="text-gray-400">No covered parking available</div>
+           <></>
           )}
         </div>
       </div>
