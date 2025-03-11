@@ -37,18 +37,38 @@ function ShowAllProperties() {
       const confirmed = window.confirm("Are you sure you want to delete this property?");
       if (!confirmed) return;
     
-      const { error } = await supabase
-        .from('dmhproperties')
-        .delete()
-        .eq('id', propertyId);
+      try {
+        // Delete images folder from storage
+        const { data, error: storageError } = await supabase.storage
+          .from('property-images')
+          .remove([`${propertyId}/`]);
     
-      if (error) {
-        console.error('Error deleting property:', error.message);
-      } else {
-        setProperties(properties.filter((property) => property.id !== propertyId));
-        console.log('Property deleted successfully!');
+        if (storageError) {
+          console.error('Error deleting property images:', storageError.message);
+          return;
+        }
+    
+        console.log('Property images deleted successfully!');
+    
+        // Delete property from database
+        const { error: dbError } = await supabase
+          .from('dmhproperties')
+          .delete()
+          .eq('id', propertyId);
+    
+        if (dbError) {
+          console.error('Error deleting property:', dbError.message);
+        } else {
+          setProperties(properties.filter((property) => property.id !== propertyId));
+          console.log('Property deleted successfully!');
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err.message);
       }
     };
+    
+    // Let me know if you want me to handle errors differently or add more features! 🚀
+    
     
 
     const formatPrice = (price) => {
