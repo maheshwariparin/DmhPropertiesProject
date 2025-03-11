@@ -338,10 +338,10 @@ export default function Home() {
           <div className="p-4">
           <div className="flex flex-wrap items-center gap-4 justify-evenly">
   <div className="flex flex-col">
-    <label className="mb-2 text-blue-500 font-semibold">Search by Locality</label>
+    <label className="mb-2 text-blue-500 font-semibold">Search by city, locality, or society...</label>
     <input
       type="text"
-      placeholder="Enter locality..."
+      placeholder="Search by city, locality, or society..."
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
       className="p-1 border bg-white border-gray-300 w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 placeholder-gray-500 placeholder:italic"
