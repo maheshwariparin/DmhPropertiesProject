@@ -37,19 +37,19 @@ function ShowAllProperties() {
       if (!confirmed) return;
     
       try {
-        // List all files in the folder and subfolder
+        // List all files in the folder
         const { data: files, error: listError } = await supabase.storage
           .from('property-images')
-          .list(`${propertyId}/image`);
+          .list(`${propertyId}/images`);
     
         if (listError) {
           console.error('Error listing property images:', listError.message);
           return;
         }
     
-        if (files.length > 0) {
+        if (files && files.length > 0) {
           // Collect full file paths for deletion
-          const filePaths = files.map((file) => `${propertyId}/image/${file.name}`);
+          const filePaths = files.map((file) => `${propertyId}/images/${file.name}`);
     
           // Delete the files
           const { error: storageError } = await supabase.storage
@@ -75,13 +75,13 @@ function ShowAllProperties() {
         if (dbError) {
           console.error('Error deleting property:', dbError.message);
         } else {
-          setProperties(properties.filter((property) => property.id !== propertyId));
+          setProperties((prevProperties) => prevProperties.filter((property) => property.id !== propertyId));
           console.log('Property deleted successfully!');
         }
       } catch (err) {
         console.error('Unexpected error:', err.message);
       }
-    };
+    }
     
     // Let me know if you want me to tweak anything else! 🚀
     
