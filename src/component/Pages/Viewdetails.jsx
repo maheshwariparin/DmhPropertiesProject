@@ -343,7 +343,7 @@ const [seoData, setSeoData] = useState({ title: '', description: '', schema: {} 
       )}
         
     </div>
-          <div className="flex items-center gap-2"><FaDoorOpen /> Facing: {properties.house_status || "Not Specified"}</div>
+          {/* <div className="flex items-center gap-2"><FaDoorOpen /> Facing: {properties.house_status || "Not Specified"}</div> */}
         </div>
   
         <h3 className="mt-6 text-lg font-semibold text-blue-500">Summary</h3>
