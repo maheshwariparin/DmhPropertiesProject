@@ -496,9 +496,9 @@ export default function Rent_Lease() {
                         <p><strong>Phone:</strong> +91 9925001226</p>
                         <p><strong>Email:</strong> dmproperties@gmail.com</p>
                         <p>
-                            <strong>Address:</strong> B-302 Sun South Street,  
-                            Near Bopal Firestation,  
-                            South Bopal, Ahmedabad
+                        <strong>Address:</strong> B/302, Sun South Street,
+                             South Bopal, Bopal, Ahmedabad, 
+                             Gujarat 380058
                         </p>
                     </div>
                 </div>
