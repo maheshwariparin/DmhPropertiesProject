@@ -100,7 +100,7 @@ export const PropertyProvider = ({ children }) => {
         } else {
             autoSummary = `This ${bedrooms || "N/A"} BHK ${propertyType} is located in ${location.society || "N/A"}, ${location.locality || "N/A"}, ${location.city || "N/A"}.
 
-            The flat occupies a super built area of ${carpetArea || "N/A"} sq.ft. That consists of ${bedrooms || "N/A"} bedrooms, ${bathrooms || "N/A"} bathrooms, and ${balconies || "N/A"} balconies.
+            The flat occupies a super built up area of ${carpetArea || "N/A"} sq.ft. That consists of ${bedrooms || "N/A"} bedrooms, ${bathrooms || "N/A"} bathrooms, and ${balconies || "N/A"} balconies.
 
             The flat has a total of ${totalFloors || "N/A"} floors, and this property is situated on the ${selectedFloor || "N/A"} floor.
 
