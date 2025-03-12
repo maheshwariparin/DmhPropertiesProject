@@ -53,8 +53,6 @@ export const PropertyProvider = ({ children }) => {
   ];
 
 
-
-
   const ageOptions = ["0-1 years", "1-3 years", "3-10 years", "10+ years"];
 
   // Functions
@@ -86,7 +84,7 @@ export const PropertyProvider = ({ children }) => {
         } else if (propertyType === "Office Space" || propertyType === "Shop" || propertyType === "Warehouse" || propertyType === "Other") {
             autoSummary = `This ${propertyType} is located in ${location.locality || "N/A"}, ${location.city || "N/A"}.
 
-            The property offers a carpet area of ${carpetArea || "N/A"} sq.ft, featuring ${bedrooms || "N/A"} work space rooms  and ${bathrooms || "N/A"} washrooms.
+            The property offers a super built up area of ${carpetArea || "N/A"} sq.ft, featuring ${bedrooms || "N/A"} work space rooms  and ${bathrooms || "N/A"} washrooms.
 
             It is spread across ${totalFloors || "N/A"} floors, with this unit on the ${selectedFloor || "N/A"} floor.
 
@@ -102,7 +100,7 @@ export const PropertyProvider = ({ children }) => {
         } else {
             autoSummary = `This ${bedrooms || "N/A"} BHK ${propertyType} is located in ${location.society || "N/A"}, ${location.locality || "N/A"}, ${location.city || "N/A"}.
 
-            The flat occupies a carpet area of ${carpetArea || "N/A"} sq.ft. That consists of ${bedrooms || "N/A"} bedrooms, ${bathrooms || "N/A"} bathrooms, and ${balconies || "N/A"} balconies.
+            The flat occupies a super built area of ${carpetArea || "N/A"} sq.ft. That consists of ${bedrooms || "N/A"} bedrooms, ${bathrooms || "N/A"} bathrooms, and ${balconies || "N/A"} balconies.
 
             The flat has a total of ${totalFloors || "N/A"} floors, and this property is situated on the ${selectedFloor || "N/A"} floor.
 
