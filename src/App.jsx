@@ -36,7 +36,10 @@ function App() {
         <Route path="/rent_leaseproperty" element={<Rent_Lease/>}/>
         <Route path="/Pg" element={<PG/>}/>
         <Route path="/property/:id/:slug" element={<Viewdetails />} />
-
+        <Route path="/3bhk-flat-Ahmedabad" element={<Home />} />
+        <Route path="/2bhk-flat-Ahmedabad" element={<Home />} />
+        <Route path="/1bhk-flat-Ahmedabad" element={<Home />} />
+       
         </Routes>
     </Router>
   );
